@@ -19,6 +19,9 @@
     --radius: 8px;
     --radius-lg: 16px;
     --transition: all 0.3s ease;
+    --banner-height: 40px;
+    --navbar-height: 70px;
+    --top-offset: calc(var(--banner-height) + var(--navbar-height));
 }
 
 /* ===== Reset & Base ===== */
@@ -30,7 +33,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 120px;
+    scroll-padding-top: var(--top-offset, 110px);
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -53,6 +57,9 @@ body {
     left: 0;
     right: 0;
     z-index: 1100;
+    height: var(--banner-height);
+    display: flex;
+    align-items: center;
     animation: bannerSlide 0.5s ease-out;
 }
 
@@ -70,6 +77,7 @@ body {
 
 .tax-banner-icon {
     font-size: 1.2rem;
+    flex-shrink: 0;
 }
 
 .tax-banner-text {
@@ -81,6 +89,7 @@ body {
     font-weight: 700;
     text-decoration: underline;
     text-underline-offset: 2px;
+    padding: 4px 2px;
 }
 
 .tax-banner-text a:hover {
@@ -91,12 +100,14 @@ body {
     background: none;
     border: none;
     color: var(--white);
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     cursor: pointer;
-    padding: 0 6px;
+    padding: 8px 10px;
     opacity: 0.7;
     transition: var(--transition);
     line-height: 1;
+    flex-shrink: 0;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .tax-banner-close:hover {
@@ -109,7 +120,7 @@ body {
 
 /* When banner is visible, push navbar down */
 .navbar {
-    top: 40px;
+    top: var(--banner-height);
 }
 
 .tax-banner.hidden + .navbar {
@@ -142,6 +153,43 @@ img {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+/* ===== Touch Optimization ===== */
+@media (hover: none) and (pointer: coarse) {
+    .btn {
+        min-height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-links a {
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+    }
+
+    .contact-item a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .floating-contact a {
+        min-height: 48px;
+    }
+
+    /* Disable hover-only effects on touch devices */
+    .trust-card:hover,
+    .service-card:hover,
+    .why-card:hover {
+        transform: none;
+    }
+
+    .promo-card {
+        animation: none;
+    }
 }
 
 /* ===== Buttons ===== */
@@ -318,7 +366,12 @@ img {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 8px;
+    padding: 12px;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
 }
 
 .nav-toggle span {
@@ -327,6 +380,19 @@ img {
     background-color: var(--dark);
     border-radius: 3px;
     transition: var(--transition);
+}
+
+/* Hamburger to X animation */
+.nav-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 6px);
+}
+
+.nav-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -6px);
 }
 
 /* ===== Hero Section ===== */
@@ -948,10 +1014,12 @@ img {
     border: 2px solid #e2e8f0;
     border-radius: var(--radius);
     font-family: 'Open Sans', sans-serif;
-    font-size: 0.95rem;
+    font-size: 16px; /* 16px prevents iOS auto-zoom */
     color: var(--dark);
     background-color: var(--white);
     transition: var(--transition);
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .form-group input:focus,
@@ -1186,31 +1254,76 @@ img {
 }
 
 @media (max-width: 768px) {
+    :root {
+        --banner-height: 52px;
+        --navbar-height: 64px;
+    }
+
     .nav-toggle {
         display: flex;
     }
 
+    .nav-container {
+        height: var(--navbar-height);
+    }
+
     .nav-links {
         position: fixed;
-        top: 70px;
+        top: calc(var(--banner-height) + var(--navbar-height));
         left: 0;
         right: 0;
+        bottom: 0;
         background-color: var(--white);
         flex-direction: column;
-        padding: 30px 20px;
-        gap: 20px;
+        padding: 24px 20px;
+        gap: 8px;
         box-shadow: var(--shadow-lg);
-        transform: translateY(-120%);
-        transition: var(--transition);
+        transform: translateX(100%);
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 999;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-links.active {
-        transform: translateY(0);
+        transform: translateX(0);
+    }
+
+    /* When banner is hidden, adjust mobile menu position */
+    .tax-banner.hidden ~ .navbar .nav-links {
+        top: var(--navbar-height);
+    }
+
+    .nav-links li {
+        width: 100%;
+    }
+
+    .nav-links a {
+        display: flex;
+        align-items: center;
+        padding: 14px 16px;
+        border-radius: var(--radius);
+        font-size: 1rem;
+        width: 100%;
+    }
+
+    .nav-links a:hover, .nav-links a:active {
+        background-color: var(--light);
+    }
+
+    .nav-links a:not(.btn)::after {
+        display: none;
+    }
+
+    .nav-links .btn-nav {
+        margin-top: 8px;
+        justify-content: center;
+        width: 100%;
+        padding: 14px 24px;
     }
 
     .hero {
-        padding: 140px 0 60px;
+        padding: calc(var(--top-offset) + 30px) 0 60px;
         min-height: auto;
     }
 
@@ -1218,26 +1331,71 @@ img {
         font-size: 1.8rem;
     }
 
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-desc {
+        font-size: 0.95rem;
+    }
+
     .trust-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 16px;
+    }
+
+    .trust-card {
+        padding: 28px 24px;
     }
 
     .trust-section {
         margin-top: 0;
+        padding: 40px 0;
     }
 
     .section-header h2 {
         font-size: 1.7rem;
     }
 
+    .section-header {
+        margin-bottom: 32px;
+    }
+
+    .services-section, .why-section, .about-section, .contact-section {
+        padding: 50px 0;
+    }
+
+    .service-card {
+        padding: 28px 24px;
+    }
+
     .why-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .why-card {
+        padding: 24px 20px;
     }
 
     .contact-grid {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 32px;
+    }
+
+    .contact-form-wrapper {
+        padding: 24px 20px;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 16px;
+        font-size: 16px; /* Prevents iOS zoom on focus */
+    }
+
+    .promo-banner {
+        padding: 40px 0;
     }
 
     .promo-banner-content {
@@ -1245,18 +1403,38 @@ img {
         text-align: center;
     }
 
+    .promo-banner-text h2 {
+        font-size: 1.4rem;
+    }
+
+    .footer {
+        padding: 40px 0 0;
+    }
+
     .footer-grid {
         grid-template-columns: 1fr;
         gap: 30px;
+    }
+
+    .promo-card {
+        padding: 24px;
     }
 
     .promo-discount {
         font-size: 3.5rem;
     }
 
+    .stats-section {
+        padding: 36px 0;
+    }
+
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
+        gap: 16px;
+    }
+
+    .stat-item {
+        padding: 16px 12px;
     }
 
     .stat-item::after {
@@ -1267,24 +1445,61 @@ img {
         font-size: 2rem;
     }
 
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
     .tax-banner {
-        font-size: 0.78rem;
-        padding: 8px 0;
+        font-size: 0.75rem;
+        padding: 6px 0;
+        height: var(--banner-height);
+    }
+
+    .tax-banner-inner {
+        gap: 6px;
     }
 
     .tax-banner-icon {
         display: none;
     }
 
+    .tax-banner-text {
+        line-height: 1.4;
+    }
+
     .logo-icon svg {
         width: 36px;
         height: 36px;
     }
+
+    .logo-name {
+        font-size: 1.1rem;
+    }
+
+    .logo-tagline {
+        font-size: 0.6rem;
+    }
+
+    .about-text p {
+        font-size: 0.95rem;
+    }
+
+    .map-section iframe {
+        height: 250px;
+    }
 }
 
 @media (max-width: 480px) {
+    :root {
+        --banner-height: 60px;
+    }
+
     .hero h1 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.9rem;
     }
 
     .hero-badges {
@@ -1292,15 +1507,113 @@ img {
     }
 
     .badge {
-        font-size: 0.75rem;
-        padding: 4px 14px;
+        font-size: 0.72rem;
+        padding: 5px 12px;
+    }
+
+    .badge i {
+        font-size: 0.7rem;
     }
 
     .hero-cta {
         flex-direction: column;
     }
 
+    .hero-cta .btn {
+        width: 100%;
+    }
+
     .btn {
         text-align: center;
+        padding: 14px 24px;
+    }
+
+    .section-header h2 {
+        font-size: 1.4rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+        letter-spacing: 0.5px;
+    }
+
+    .trust-icon {
+        width: 56px;
+        height: 56px;
+        font-size: 1.2rem;
+    }
+
+    .service-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .promo-discount {
+        font-size: 2.8rem;
+    }
+
+    .promo-label {
+        font-size: 1.2rem;
+    }
+
+    .contact-icon {
+        width: 44px;
+        height: 44px;
+        min-width: 44px;
+    }
+
+    .floating-contact a {
+        font-size: 0.65rem;
+        padding: 10px 4px;
+    }
+
+    .floating-contact a i {
+        font-size: 1rem;
+    }
+
+    .footer-logo svg {
+        width: 32px;
+        height: 32px;
+    }
+
+    .tax-banner-text {
+        font-size: 0.7rem;
+    }
+
+    .tax-banner-close {
+        padding: 8px 6px;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        padding: 0 14px;
+    }
+
+    .hero h1 {
+        font-size: 1.25rem;
+    }
+
+    .hero-badges {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo-tagline {
+        display: none;
+    }
+
+    .promo-card {
+        padding: 20px 16px;
     }
 }

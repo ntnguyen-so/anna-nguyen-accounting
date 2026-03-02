@@ -21,10 +21,34 @@ const closeBanner = document.getElementById('closeBanner');
 if (closeBanner && taxBanner) {
     closeBanner.addEventListener('click', () => {
         taxBanner.classList.add('hidden');
-        // Adjust navbar position
+        // Update CSS custom property so everything repositions
+        document.documentElement.style.setProperty('--banner-height', '0px');
         document.getElementById('navbar').style.top = '0';
     });
 }
+
+// ===== Close mobile menu on outside click =====
+document.addEventListener('click', (e) => {
+    if (navLinks.classList.contains('active') && 
+        !navLinks.contains(e.target) && 
+        !navToggle.contains(e.target)) {
+        navLinks.classList.remove('active');
+        navToggle.classList.remove('active');
+    }
+});
+
+// ===== Lock body scroll when mobile menu is open =====
+function toggleBodyScroll() {
+    if (navLinks.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
+}
+
+// Watch for nav changes
+const navObserver = new MutationObserver(toggleBodyScroll);
+navObserver.observe(navLinks, { attributes: true, attributeFilter: ['class'] });
 
 // ===== Navbar Scroll Effect =====
 const navbar = document.getElementById('navbar');
