@@ -15,6 +15,17 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
+// ===== Tax Banner Dismiss =====
+const taxBanner = document.getElementById('taxBanner');
+const closeBanner = document.getElementById('closeBanner');
+if (closeBanner && taxBanner) {
+    closeBanner.addEventListener('click', () => {
+        taxBanner.classList.add('hidden');
+        // Adjust navbar position
+        document.getElementById('navbar').style.top = '0';
+    });
+}
+
 // ===== Navbar Scroll Effect =====
 const navbar = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -55,7 +66,7 @@ const observer = new IntersectionObserver((entries) => {
 }, observerOptions);
 
 // Observe elements for animation
-document.querySelectorAll('.trust-card, .service-card, .why-card, .contact-item').forEach(el => {
+document.querySelectorAll('.trust-card, .service-card, .why-card, .contact-item, .stat-item').forEach(el => {
     el.style.opacity = '0';
     el.style.transform = 'translateY(30px)';
     observer.observe(el);

@@ -10,14 +10,44 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230ea5e9'/%3E%3Cpath d='M16 4l1.5 3.5L19 6l-.5 3 2.5-1-1.5 2.5L22 11l-2.5 1 1.5 2.5-2.5-1 .5 3-1.5-1.5L16 18.5 14.5 15 13 16.5l.5-3-2.5 1L12.5 12 10 11l2.5-.5L11 8l2.5 1L13 6l1.5 1.5z' fill='white' opacity='.9'/%3E%3Ctext x='16' y='27' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='8' fill='white'%3EAN%3C/text%3E%3C/svg%3E">
 </head>
 <body>
+    <!-- Tax Season Banner -->
+    <div class="tax-banner" id="taxBanner">
+        <div class="container tax-banner-inner">
+            <span class="tax-banner-icon">🍁</span>
+            <span class="tax-banner-text"><strong>Tax Season 2026</strong> &mdash; T1 Personal deadline: April 30 | Self-employed: June 15 | <a href="#contact">Book now</a></span>
+            <button class="tax-banner-close" id="closeBanner" aria-label="Close banner">&times;</button>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <a href="#" class="logo">
-                <span class="logo-name">Anna Nguyen</span>
-                <span class="logo-tagline">Accounting & Tax Services</span>
+                <div class="logo-icon">
+                    <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="44" height="44">
+                        <!-- Background circle -->
+                        <circle cx="24" cy="24" r="23" fill="url(#logoGrad)" />
+                        <!-- Maple leaf -->
+                        <path d="M24 8l2 4.5 1.8-2 -.6 3.8 3.2-1.3-1.8 3.2 3-.5-3.2 2 1.8 3.2-3.2-1.3.6 3.8-1.8-2L24 24l-2-2.5-1.8 2 .6-3.8-3.2 1.3 1.8-3.2-3 .5 3.2-2-1.8-3.2 3.2 1.3-.6-3.8 1.8 2z" fill="white" opacity="0.95"/>
+                        <!-- Small calculator lines -->
+                        <rect x="15" y="30" width="18" height="10" rx="2" fill="white" opacity="0.25"/>
+                        <line x1="18" y1="33" x2="30" y2="33" stroke="white" stroke-width="1" opacity="0.5"/>
+                        <line x1="18" y1="36" x2="26" y2="36" stroke="white" stroke-width="1" opacity="0.5"/>
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="48" y2="48">
+                                <stop offset="0%" stop-color="#0284c7"/>
+                                <stop offset="100%" stop-color="#38bdf8"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="logo-text">
+                    <span class="logo-name">Anna Nguyen</span>
+                    <span class="logo-tagline">Accounting & Tax Services</span>
+                </div>
             </a>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
                 <span></span>
@@ -43,9 +73,9 @@
                 <p class="hero-subtitle">Serving Small Businesses &amp; Individuals in White Rock, Surrey &amp; the Lower Mainland</p>
                 <p class="hero-desc">Invest your time and efforts in running your business. Leave the accounting to us.</p>
                 <div class="hero-badges">
-                    <span class="badge">Trusted</span>
-                    <span class="badge">Experienced</span>
-                    <span class="badge">Professional</span>
+                    <span class="badge"><i class="fas fa-maple-leaf"></i> CRA Compliant</span>
+                    <span class="badge"><i class="fas fa-shield-halved"></i> Trusted</span>
+                    <span class="badge"><i class="fas fa-award"></i> Professional</span>
                 </div>
                 <div class="hero-cta">
                     <a href="#contact" class="btn btn-primary">Get Started</a>
@@ -64,6 +94,30 @@
                         <div class="promo-season">Tax Season 2026</div>
                     </div>
                     <a href="#contact" class="btn btn-promo">Claim Your Discount</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Counter -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-count="500">500+</div>
+                    <div class="stat-label">Tax Returns Filed</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="200">200+</div>
+                    <div class="stat-label">Happy Clients</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-count="100">100%</div>
+                    <div class="stat-label">CRA Compliant</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">5+</div>
+                    <div class="stat-label">Years Experience</div>
                 </div>
             </div>
         </div>
@@ -333,7 +387,22 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h3>Anna Nguyen</h3>
+                    <div class="footer-logo">
+                        <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+                            <circle cx="24" cy="24" r="23" fill="url(#footerLogoGrad)" />
+                            <path d="M24 8l2 4.5 1.8-2 -.6 3.8 3.2-1.3-1.8 3.2 3-.5-3.2 2 1.8 3.2-3.2-1.3.6 3.8-1.8-2L24 24l-2-2.5-1.8 2 .6-3.8-3.2 1.3 1.8-3.2-3 .5 3.2-2-1.8-3.2 3.2 1.3-.6-3.8 1.8 2z" fill="white" opacity="0.95"/>
+                            <rect x="15" y="30" width="18" height="10" rx="2" fill="white" opacity="0.25"/>
+                            <line x1="18" y1="33" x2="30" y2="33" stroke="white" stroke-width="1" opacity="0.5"/>
+                            <line x1="18" y1="36" x2="26" y2="36" stroke="white" stroke-width="1" opacity="0.5"/>
+                            <defs>
+                                <linearGradient id="footerLogoGrad" x1="0" y1="0" x2="48" y2="48">
+                                    <stop offset="0%" stop-color="#0284c7"/>
+                                    <stop offset="100%" stop-color="#38bdf8"/>
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <h3>Anna Nguyen</h3>
+                    </div>
                     <p class="footer-tagline">Accounting & Tax Services Company LTD.</p>
                     <p>Professional bookkeeping, accounting, tax, and payroll services for small businesses and individuals in White Rock, BC.</p>
                 </div>
