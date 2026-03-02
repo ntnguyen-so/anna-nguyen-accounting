@@ -79,35 +79,58 @@ window.addEventListener('scroll', () => {
 
 // ===== Contact Form Handler =====
 const contactForm = document.getElementById('contactForm');
-contactForm.addEventListener('submit', (e) => {
+contactForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // Collect form data
-    const formData = new FormData(contactForm);
-    const name = formData.get('name');
-    const email = formData.get('email');
-    const phone = formData.get('phone') || 'Not provided';
-    const service = formData.get('service');
-    const message = formData.get('message');
-    
-    // Create mailto link as fallback
-    const subject = encodeURIComponent(`New Inquiry from ${name} - ${service}`);
-    const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\n\nMessage:\n${message}`
-    );
-    
-    window.location.href = `mailto:tax.annanguyen@gmail.com?subject=${subject}&body=${body}`;
-    
-    // Show success message
     const btn = contactForm.querySelector('button[type="submit"]');
     const originalText = btn.textContent;
-    btn.textContent = 'Opening Email Client...';
-    btn.style.backgroundColor = '#10b981';
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    
+    try {
+        const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+            btn.textContent = '✓ Message Sent!';
+            btn.style.backgroundColor = '#10b981';
+            contactForm.reset();
+        } else {
+            // Fallback to mailto if Formspree fails
+            const formData = new FormData(contactForm);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const phone = formData.get('phone') || 'Not provided';
+            const service = formData.get('service');
+            const message = formData.get('message');
+            const subject = encodeURIComponent(`New Inquiry from ${name} - ${service}`);
+            const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\n\nMessage:\n${message}`);
+            window.location.href = `mailto:tax.annanguyen@gmail.com?subject=${subject}&body=${body}`;
+            btn.textContent = 'Opening Email Client...';
+            btn.style.backgroundColor = '#f59e0b';
+        }
+    } catch (err) {
+        // Fallback to mailto on network error
+        const formData = new FormData(contactForm);
+        const name = formData.get('name') || '';
+        const email = formData.get('email') || '';
+        const phone = formData.get('phone') || 'Not provided';
+        const service = formData.get('service') || '';
+        const message = formData.get('message') || '';
+        const subject = encodeURIComponent(`New Inquiry from ${name} - ${service}`);
+        const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nPhone: ${phone}\nService: ${service}\n\nMessage:\n${message}`);
+        window.location.href = `mailto:tax.annanguyen@gmail.com?subject=${subject}&body=${body}`;
+        btn.textContent = 'Opening Email Client...';
+        btn.style.backgroundColor = '#f59e0b';
+    }
     
     setTimeout(() => {
         btn.textContent = originalText;
         btn.style.backgroundColor = '';
-        contactForm.reset();
+        btn.disabled = false;
     }, 3000);
 });
 
