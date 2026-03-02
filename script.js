@@ -15,18 +15,6 @@ document.querySelectorAll('.nav-links a').forEach(link => {
     });
 });
 
-// ===== Tax Banner Dismiss =====
-const taxBanner = document.getElementById('taxBanner');
-const closeBanner = document.getElementById('closeBanner');
-if (closeBanner && taxBanner) {
-    closeBanner.addEventListener('click', () => {
-        taxBanner.classList.add('hidden');
-        // Update CSS custom property so everything repositions
-        document.documentElement.style.setProperty('--banner-height', '0px');
-        document.getElementById('navbar').style.top = '0';
-    });
-}
-
 // ===== Close mobile menu on outside click =====
 document.addEventListener('click', (e) => {
     if (navLinks.classList.contains('active') && 
