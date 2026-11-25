@@ -184,6 +184,26 @@ img {
     width: 100%;
 }
 
+/* ===== Announcement Banner ===== */
+.announcement-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1001;
+    height: var(--banner-height);
+    display: flex;
+    align-items: center;
+    padding: 6px 0;
+    background-color: var(--primary-dark);
+    color: var(--white);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.announcement-bar a {
+    text-decoration: underline;
+}
+
 /* ===== Navigation ===== */
 .navbar {
     position: fixed;
@@ -1185,6 +1205,7 @@ img {
 @media (max-width: 768px) {
     :root {
         --navbar-height: 64px;
+        --banner-height: 72px;
     }
 
     .nav-toggle {
